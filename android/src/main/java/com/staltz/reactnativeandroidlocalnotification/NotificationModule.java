@@ -179,7 +179,13 @@ public class NotificationModule extends ReactContextBaseJavaModule {
     public void rGetApplicationName(Callback errorCallback, Callback successCallback) {
         try {
             int stringId = getReactApplicationContext().getApplicationInfo().labelRes;
-            successCallback.invoke(getReactApplicationContext().getString(stringId));
+            if (stringId == 0) {
+                successCallback.invoke(
+                    getReactApplicationContext().getApplicationInfo().nonLocalizedLabel.toString()
+                );
+            } else {
+                successCallback.invoke(getReactApplicationContext().getString(stringId));
+            }
 
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
