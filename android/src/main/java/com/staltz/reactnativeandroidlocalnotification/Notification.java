@@ -10,7 +10,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.net.Uri;
 import android.app.NotificationChannel;
 
@@ -20,7 +20,7 @@ import java.net.URL;
 import com.google.gson.Gson;
 
 import android.util.Base64;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.text.Html;
 import android.util.Log;
 import android.graphics.Color;
@@ -113,7 +113,7 @@ public class Notification {
      * Build the notification.
      */
     public android.app.Notification build() {
-        NotificationCompat.Builder notificationBuilder;
+
         String iconName = attributes.smallIcon != null ? attributes.smallIcon : "ic_launcher";
         int iconResource = context.getResources().getIdentifier(attributes.smallIcon, "mipmap", context.getPackageName());
         String channelID = attributes.channelID != null ? attributes.channelID : "channel_0";
@@ -127,7 +127,9 @@ public class Notification {
             NotificationChannel channel = new NotificationChannel(channelID, channelName, importance);
             notificationManager.createNotificationChannel(channel);
         }
-        notificationBuilder = new NotificationCompat.Builder(context, channelID);
+        androidx.core.app.NotificationCompat.Builder notificationBuilder = new androidx.core.app.NotificationCompat.Builder(
+                context, channelID);
+
         notificationBuilder.setContentTitle(attributes.subject).setContentText(attributes.message)
                 .setSmallIcon(iconResource)
                 .setAutoCancel(attributes.autoClear).setContentIntent(getContentIntent());
@@ -150,7 +152,7 @@ public class Notification {
 
         if (attributes.inboxStyle) {
 
-            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            androidx.core.app.NotificationCompat.InboxStyle inboxStyle = new androidx.core.app.NotificationCompat.InboxStyle();
 
             if (attributes.inboxStyleBigContentTitle != null) {
                 inboxStyle.setBigContentTitle(attributes.inboxStyleBigContentTitle);
@@ -199,7 +201,7 @@ public class Notification {
         // if bigText is not null, it have priority over bigStyleImageBase64
         if (attributes.bigText != null) {
             notificationBuilder
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(attributes.bigText));
+                    .setStyle(new androidx.core.app.NotificationCompat.BigTextStyle().bigText(attributes.bigText));
         } else if (attributes.bigStyleUrlImage != null && !attributes.bigStyleUrlImage.equals("")) {
 
             Bitmap bigPicture = null;
